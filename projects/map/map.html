@@ -1,0 +1,216 @@
+<style>
+  body,
+  html {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #app {
+    width: 100%;
+    height: 100%;
+  }
+
+  .reviewForm {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .balloon {
+    font-size: 16px;
+    font-family: Arial;
+  }
+
+  .review {
+    padding: 10px 0;
+  }
+
+  .review--newreview {
+    border-top: 1px solid #E7E7E7;
+  }
+
+  .review__info {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .review__name {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+
+  .review__place {
+    color: rgba(143, 143, 143, 1);
+    text-decoration: none;
+    margin-right: 5px;
+  }
+
+  .review__date {
+    color: rgba(143, 143, 143, 1);
+  }
+
+  .review__text {
+    color: rgba(143, 143, 143, 1);
+  }
+
+  .review__title {
+    font-weight: bold;
+  }
+
+  .review__form {
+    margin-top: 20px;
+  }
+
+  .form {
+    font-size: 14px;
+  }
+
+  .form__input {
+    margin-bottom: 10px;
+  }
+
+  .form__input:last-child {
+    margin-bottom: 0;
+  }
+
+  .form__input input,
+  .form__input textarea {
+    color: #000;
+    padding: 9px;
+    box-sizing: border-box;
+    width: 100%;
+    font-family: Arial;
+  }
+
+  .form__submit .button {
+    background-color: #FF8663;
+    color: #fff;
+    font-weight: bold;
+    padding: 9px 16px;
+    cursor: pointer;
+    border: 0;
+    border-radius: 2px;
+    width: auto;
+  }
+
+  .carousel {
+    position: relative;
+    padding: 0 13px;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .carousel__item {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    font-size: 16px;
+  }
+
+  .customBalloon {
+    position: absolute;
+    background: #fff;
+    padding: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+
+  .customBalloon__inner {
+    overflow-y: scroll;
+  }
+
+  .customBalloon__tail {
+    display: block;
+    position: relative;
+    left: 15px;
+    top: 10px;
+    width: 17px;
+    height: 17px;
+    margin-bottom: -17px;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+  }
+
+  .customBalloon__tail::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    bottom: 1px;
+    left: 1px;
+  }
+</style>
+
+<div id="app">
+
+</div>
+
+<template id="customBalloonTemplate">
+  <div class="customBalloon">
+    <div class="balloon customBalloon__inner">
+    </div>
+  </div>
+</template>
+<template id="reviewTemplate">
+  <div class="review">
+    <div class="review__info">
+      <div class="review__name"></div>
+      <a class="review__place carousel__link" data-ymaps-x="" data-ymaps-y="" href="#"></a>
+      <div class="review__date"></div>
+    </div>
+    <div class="review__text"></div>
+  </div>
+</template>
+<template id="reviewFormBalloonContentLayout">
+  <div class="balloon">
+    <div class="review">
+      <div class="review__info">
+        <div class="review__name">{{properties.name}}</div>
+        <div class="review__place">{{properties.place}}</div>
+        <div class="review__date">{{properties.date}}</div>
+      </div>
+      <div class="review__text">{{properties.text}}</div>
+    </div>
+    <div class="review review--newreview">
+      <div class="review__title">Отзыв:</div>
+      <form class="review__form form">
+        <div class="form__input form__name"><input placeholder="Укажите Ваше имя" name="name" /></div>
+        <div class="form__input form__place"><input placeholder="Укажите место" name="place" /></div>
+        <div class="form__input form__text"><textarea rows="5" placeholder="Оставить отзыв" name="text"></textarea>
+        </div>
+        <div class="form__input form__submit"><input type="submit" value="Добавить" class="button" /></div>
+      </form>
+    </div>
+  </div>
+</template>
+<template id="carouselBalloonItemContentLayout">
+  <div class="review carousel__item">
+    <div class="review__info">
+      <div class="review__name">{{geoObject.properties.name}}</div>
+      <a class="review__place carousel__link" data-ymaps-x={{geoObject.properties.x}}
+        data-ymaps-y={{geoObject.properties.y}} href="#">{{geoObject.properties.place}}</a>
+    </div>
+    <div class="review__text">{{geoObject.properties.text}}</div>
+  </div>
+</template>
+<template id="carouselBalloonContentLayout">
+  <div class="balloon">
+    {% include "cluster#balloonCarousel" %}
+    <div class="review review--newreview">
+      <div class="review__title">Отзыв:</div>
+      <form class="review__form form">
+        <div class="form__input form__name"><input placeholder="Укажите Ваше имя" name="name" /></div>
+        <div class="form__input form__place"><input placeholder="Укажите место" name="place" /></div>
+        <div class="form__input form__text"><textarea rows="5" placeholder="Оставить отзыв" name="text"></textarea>
+        </div>
+        <div class="form__input form__submit"><input type="submit" value="Добавить" class="button" /></div>
+      </form>
+    </div>
+  </div>
+</template>
